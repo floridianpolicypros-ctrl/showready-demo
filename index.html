@@ -121,10 +121,16 @@
      sel('Identification',['License, selfie, and location','License and selfie'])+
      sel('Send by',['Text message','Email','Text and email']);}},
 
-   {id:'prep',mode:'agent',agr:true,btn:'Send to buyer',body:function(){return '<div style="display:flex;align-items:center;justify-content:space-between"><h2 class="t">Prepare</h2>'+chip('from your last 12','ac')+'</div>'+
-     '<p class="sub">Pre-filled from your history. Glance and send.</p>'+
-     row('Agreement','SA-5 Showing Agreement')+row('Broker','Southern Select Realty')+row('Expiration','End of showing')+row('Compensation','3% &nbsp;'+chip('confirmed','ok'))+row('Retainer','$500.00')+row('Property','210 Ocean Drive, Unit 4B')+
-     '<p class="small muted mt">Tap any row to change. Brokerage-locked values can’t be changed.</p>';}},
+   {id:'prep',mode:'agent',agr:true,btn:'Send to buyer',body:function(){return '<h2 class="t">Prepare agreement</h2>'+
+     '<p class="sub">Make each selection to complete the SA-5. Nothing is pre-selected — you confirm every term.</p>'+
+     row('Consumer (from ID)','Maria R. Alvarez')+
+     row('Property (from listing)','210 Ocean Drive, Unit 4B')+
+     sel('Agreement',['Choose agreement…','SA-5 Showing Agreement','Exclusive Buyer Rep (EBBA-7tb)'])+
+     sel('Brokerage relationship',['Choose relationship…','Transaction broker','Single agent','No brokerage relationship'])+
+     sel('Expiration',['Choose expiration…','End of showing','End of today','In 24 hours','Custom date'])+
+     sel('Compensation type',['Choose type…','Percentage of price','Flat fee','Retainer only'])+
+     '<label class="f">Compensation amount</label><input placeholder="e.g., 3% or $5,000">'+
+     '<label class="f">Retainer</label><input placeholder="e.g., $500">';}},
 
    {id:'consent',mode:'buyer',btn:'I agree — continue',body:function(){return '<h2 class="t">Hi Maria 👋</h2>'+
      '<p class="sub">Carlos from Southern Select Realty asked you to confirm your identity before your showing. Takes about 90 seconds.</p>'+
