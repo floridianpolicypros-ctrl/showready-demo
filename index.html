@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ShowReady — Interactive Demo</title>
+<meta name="description" content="ShowReady: verify the buyer, prepare the agreement, be ready to show. Interactive demo.">
+<style>
+  :root{
+    --bg:#eef1f5; --card:#ffffff; --ink:#161b26; --muted:#6b7280; --line:#e5e8ee;
+    --accent:#1f6feb; --accent-bg:#e7f0fe; --accent-ink:#0b4aa2;
+    --ok:#0f9d58; --ok-bg:#e6f4ea; --ok-ink:#0b6b3a;
+    --warn:#b8860b; --warn-bg:#fbf1dd; --warn-ink:#7a5600;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+  .wrap{max-width:480px;margin:0 auto;padding:16px 14px 40px;min-height:100vh}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:18px}
+  .logo{width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
+  .demoTag{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--accent-ink);background:var(--accent-bg);padding:4px 9px;border-radius:999px}
+  .tagline{font-size:12.5px;color:var(--muted);margin:0 0 14px 2px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;min-height:520px;display:flex;flex-direction:column}
+  .pill{align-self:flex-start;font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;margin-bottom:12px}
+  .pill.agent{background:var(--accent-bg);color:var(--accent-ink)}
+  .pill.buyer{background:var(--ok-bg);color:var(--ok-ink)}
+  .dots{display:flex;gap:5px;justify-content:center;min-height:8px;margin-bottom:8px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#cbd2dc}
+  .dot.on{background:var(--accent)}
+  .body{flex:1}
+  h2.t{font-size:19px;margin:0 0 4px;font-weight:600}
+  .sub{font-size:13px;color:var(--muted);margin:0 0 12px}
+  label.f{display:block;font-size:12px;color:var(--muted);margin:12px 0 4px}
+  select,input{width:100%;font-size:15px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font-family:inherit}
+  select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .row .k{color:var(--muted)}
+  .row .v{font-weight:600;text-align:right}
+  .chip{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .chip.ok{background:var(--ok-bg);color:var(--ok-ink)} .chip.ac{background:var(--accent-bg);color:var(--accent-ink)} .chip.wn{background:var(--warn-bg);color:var(--warn-ink)}
+  .listcard{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#f7f9fc;border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:9px}
+  .listcard .n{font-size:14.5px;font-weight:600} .listcard .a{font-size:12px;color:var(--muted)}
+  .tiles{display:flex;gap:8px}
+  .tile{flex:1;text-align:center;padding:11px 6px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--muted);user-select:none}
+  .tile.on{border:2px solid var(--accent);background:var(--accent-bg);color:var(--accent-ink)}
+  .box{background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px}
+  .capgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .capbox{height:78px;background:#f7f9fc;border:1px dashed #b9c2d0;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:var(--muted);gap:4px}
+  .photo{height:190px;background:#f7f9fc;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#aeb6c2;font-size:52px}
+  .sigline{height:88px;border:1px solid #b9c2d0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:"Segoe Script","Bradley Hand",cursive;font-size:26px;color:var(--accent)}
+  .center{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:34px}
+  .bigcheck{width:66px;height:66px;border-radius:50%;background:var(--ok-bg);color:var(--ok-ink);display:flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:14px}
+  .avatar{width:40px;height:40px;border-radius:50%;background:var(--accent-bg);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .btn{margin-top:14px;width:100%;height:48px;border:none;border-radius:12px;background:var(--accent);color:#fff;font-size:15.5px;font-weight:600;cursor:pointer;font-family:inherit}
+  .btn:active{transform:scale(.99)}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);height:40px;font-size:14px;margin-top:8px}
+  .btn.soft{background:#fff;color:var(--ink);border:1px solid var(--line);height:42px;font-size:14px}
+  .linkbtn{background:none;border:none;color:var(--accent);font-size:13px;cursor:pointer;font-family:inherit}
+  .foot{margin-top:16px;text-align:center;font-size:11.5px;color:var(--muted);line-height:1.6}
+  .fbbar{display:flex;gap:8px;margin-top:12px}
+  .fbbar a{flex:1;text-align:center;text-decoration:none;font-size:13px;font-weight:600;padding:11px;border-radius:12px;border:1px solid var(--line);color:var(--accent-ink);background:var(--accent-bg)}
+  .muted{color:var(--muted)} .small{font-size:12px} .mt{margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand"><span class="logo">S</span> ShowReady</div>
+    <span class="demoTag">DEMO</span>
+  </div>
+  <p class="tagline">Verify the buyer. Prepare the agreement. Be ready to show.</p>
+
+  <div class="card">
+    <span id="pill" class="pill agent">Agent view</span>
+    <div id="dots" class="dots"></div>
+    <div id="body" class="body"></div>
+    <button id="go" class="btn"></button>
+    <button id="back" class="btn ghost" style="display:none">Back</button>
+  </div>
+
+  <div class="fbbar">
+    <a id="fb" href="#">✎ Send feedback</a>
+    <a id="restart" href="#">↻ Restart demo</a>
+  </div>
+
+  <p class="foot">
+    Interactive prototype for evaluation only — no real data is captured, stored, or transmitted.
+    Not legal advice. Agreement fields are illustrative. © 2026 ShowReady.
+  </p>
+</div>
+
+<script>
+(function(){
+  var FEEDBACK_EMAIL = "floridianpolicypros@gmail.com";
+  var idx=0, workflow='full';
+  var B=document.getElementById('body'), GO=document.getElementById('go'), BK=document.getElementById('back'),
+      PILL=document.getElementById('pill'), DOTS=document.getElementById('dots');
+
+  function row(k,v){return '<div class="row"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';}
+  function chip(t,c){return '<span class="chip '+c+'">'+t+'</span>';}
+  function sel(l,o){return '<label class="f">'+l+'</label><select>'+o.map(function(x,i){return '<option'+(i?'':' selected')+'>'+x+'</option>';}).join('')+'</select>';}
+  function listcard(n,a,badge){return '<div class="listcard"><div><div class="n">'+n+'</div><div class="a">'+a+'</div></div>'+badge+'</div>';}
+  function tile(v,label){return '<div class="tile'+(workflow===v?' on':'')+'" data-w="'+v+'">'+label+'</div>';}
+
+  var S=[
+   {id:'intro',mode:'agent',btn:'Start the demo',body:function(){return '<h2 class="t">A 2-minute preview</h2>'+
+     '<p class="sub">Tap through as a real estate agent, then see what the buyer sees on their phone.</p>'+
+     '<div class="box mt">ShowReady lets you <b>verify a buyer’s identity</b> before a showing, and — when needed — <b>prepare and send the agreement</b> for signature, in about a minute.</div>'+
+     '<div class="box mt small muted">Everything here is a demo. No camera, location, or personal data is ever used.</div>';}},
+
+   {id:'dash',mode:'agent',btn:'+  New showing',body:function(){return '<h2 class="t">Your showings</h2><p class="sub">A quick look at what’s in progress.</p>'+
+     listcard('Maria R. Alvarez','210 Ocean Drive',chip('Ready to show','ok'))+
+     listcard('Jordan Lee','88 Palm Ave',chip('Signature pending','wn'))+
+     listcard('Priya Nair','1400 Bayfront',chip('Buyer started','ac'))+
+     '<p class="small muted mt">Start a new one below.</p>';}},
+
+   {id:'new',mode:'agent',body:function(){return '<h2 class="t">New showing</h2><p class="sub">Under 60 seconds.</p>'+
+     sel('Buyer',['New buyer — Maria Alvarez','Existing buyer'])+
+     '<label class="f">Workflow</label><div class="tiles">'+tile('verify','Verify only')+tile('full','Verify + agreement')+'</div>'+
+     sel('Identification',['License, selfie, and location','License and selfie'])+
+     sel('Send by',['Text message','Email','Text and email']);}},
+
+   {id:'prep',mode:'agent',agr:true,btn:'Send to buyer',body:function(){return '<div style="display:flex;align-items:center;justify-content:space-between"><h2 class="t">Prepare</h2>'+chip('from your last 12','ac')+'</div>'+
+     '<p class="sub">Pre-filled from your history. Glance and send.</p>'+
+     row('Agreement','SA-5 Showing Agreement')+row('Broker','Southern Select Realty')+row('Expiration','End of showing')+row('Compensation','3% &nbsp;'+chip('confirmed','ok'))+row('Retainer','$500.00')+row('Property','210 Ocean Drive, Unit 4B')+
+     '<p class="small muted mt">Tap any row to change. Brokerage-locked values can’t be changed.</p>';}},
+
+   {id:'consent',mode:'buyer',btn:'I agree — continue',body:function(){return '<h2 class="t">Hi Maria 👋</h2>'+
+     '<p class="sub">Carlos from Southern Select Realty asked you to confirm your identity before your showing. Takes about 90 seconds.</p>'+
+     '<div class="box"><div>✓ Identification collection</div><div>✓ Shared with agent and brokerage</div><div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)"><input type="checkbox" style="width:auto"> Share precise location (optional)</div></div>';}},
+
+   {id:'idcap',mode:'buyer',btn:'Submit identification',body:function(){return '<h2 class="t">Driver’s license</h2>'+
+     '<div class="capgrid"><div class="capbox"><span style="font-size:24px">▭</span>Front</div><div class="capbox"><span style="font-size:22px;letter-spacing:1px">||‖||</span>Back</div></div>'+
+     row('Name','Maria R. Alvarez')+row('DOB','1990-04-12')+row('License','D••• ••• •• 214')+row('Expires','2028-04-12')+
+     '<div class="mt">'+chip('Information matched','ok')+'</div>';}},
+
+   {id:'selfie',mode:'buyer',btn:'Capture selfie',body:function(){return '<h2 class="t">Selfie</h2><div class="photo">○</div><p class="small muted mt">Face the camera directly, good lighting, full face visible.</p>';}},
+
+   {id:'loc',mode:'buyer',btn:'Share location',body:function(){return '<h2 class="t">Location (optional)</h2><div class="photo" style="color:var(--accent);font-size:44px">◉</div><p class="sub mt">Your device reports its location at the time of submission. This does not prove identity or safety — it is recorded for the file only.</p>';}},
+
+   {id:'review',mode:'buyer',agr:true,btn:'Looks good — sign',body:function(){return '<h2 class="t">Review agreement</h2>'+
+     '<div class="box" style="height:110px;overflow:hidden;color:var(--muted)">SA-5 Showing Agreement, prepared from your brokerage’s approved template for 210 Ocean Drive…</div>'+
+     row('Property','210 Ocean Drive')+row('Term','Jul 11 – Jul 11, 2026')+row('Compensation','3%');}},
+
+   {id:'sign',mode:'buyer',agr:true,btn:'Sign & submit',body:function(){return '<h2 class="t">Signature</h2><p class="sub">Sign below to complete.</p><div class="sigline">Maria Alvarez</div>';}},
+
+   {id:'done',mode:'buyer',btn:'See the agent’s record',body:function(){return '<div class="center"><div class="bigcheck">✓</div><h2 class="t">All set, Maria</h2><p class="sub">Your details are with Carlos. You can close this page — see you at the showing.</p></div>';}},
+
+   {id:'ready',mode:'agent',btn:'↺  Back to dashboard',body:function(){return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="color:var(--ok-ink);font-size:20px">✓</span><h2 class="t" style="margin:0">Ready to show</h2></div>'+
+     '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div class="avatar">MA</div><div><div style="font-weight:600">Maria R. Alvarez</div><div class="small muted">Ref SR-2026-0711-14</div></div></div>'+
+     row('Identification',chip('Submitted','ok'))+row('Location',chip('Reported','ok'))+row('Agreement',workflow==='full'?chip('Signed','ok'):'<span class="muted">—</span>')+
+     '<button class="btn soft" style="margin-top:12px">↓  Download compliance package</button>';}}
+  ];
+
+  function visible(i){var s=S[i];return !(s.agr && workflow==='verify');}
+  function step(d){var i=idx;do{i=(i+d+S.length)%S.length;}while(!visible(i));idx=i;render();}
+
+  function render(){
+    var s=S[idx];
+    PILL.textContent=s.mode==='buyer'?'Buyer view':'Agent view';
+    PILL.className='pill '+(s.mode==='buyer'?'buyer':'agent');
+    B.innerHTML=s.body();
+    var lbl=s.btn;
+    if(s.id==='new') lbl=workflow==='verify'?'Send verification link':'Continue to prepare';
+    GO.textContent=lbl;
+    BK.style.display=idx===0?'none':'block';
+    var bs=S.filter(function(x){return x.mode==='buyer'&&visible(S.indexOf(x));});
+    if(s.mode==='buyer'){var p=bs.indexOf(s);DOTS.innerHTML=bs.map(function(_,i){return '<span class="dot'+(i<=p?' on':'')+'"></span>';}).join('');}
+    else DOTS.innerHTML='';
+    Array.prototype.forEach.call(B.querySelectorAll('[data-w]'),function(t){t.onclick=function(){workflow=t.getAttribute('data-w');render();};});
+  }
+  GO.onclick=function(){step(1);};
+  BK.onclick=function(){step(-1);};
+
+  document.getElementById('restart').onclick=function(e){e.preventDefault();idx=0;workflow='full';render();};
+  document.getElementById('fb').onclick=function(e){
+    e.preventDefault();
+    var subj=encodeURIComponent("ShowReady demo feedback");
+    var body=encodeURIComponent("What did you like?\n\n\nWhat felt confusing or missing?\n\n\nWould you use this before a showing? Why / why not?\n\n\n— Sent from the ShowReady demo");
+    window.location.href="mailto:"+FEEDBACK_EMAIL+"?subject="+subj+"&body="+body;
+  };
+  render();
+})();
+</script>
+</body>
+</html>
