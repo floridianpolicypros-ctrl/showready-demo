@@ -145,13 +145,26 @@
 
    {id:'loc',mode:'buyer',btn:'Share location',body:function(){return '<h2 class="t">Location (optional)</h2><div class="photo" style="color:var(--accent);font-size:44px">◉</div><p class="sub mt">Your device reports its location at the time of submission. This does not prove identity or safety — it is recorded for the file only.</p>';}},
 
-   {id:'review',mode:'buyer',agr:true,btn:'Looks good — sign',body:function(){return '<h2 class="t">Review agreement</h2>'+
-     '<div class="box" style="height:110px;overflow:hidden;color:var(--muted)">SA-5 Showing Agreement, prepared from your brokerage’s approved template for 210 Ocean Drive…</div>'+
-     row('Property','210 Ocean Drive')+row('Term','Jul 11 – Jul 11, 2026')+row('Compensation','3%');}},
+   {id:'review',mode:'buyer',agr:true,btn:'Looks good — sign',body:function(){return '<h2 class="t">Review your agreement</h2>'+
+     '<p class="sub">Here is your Showing Agreement, filled out. Please review before signing.</p>'+
+     '<div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:12.5px;line-height:1.75;color:#1a1f2b;max-height:250px;overflow:auto">'+
+       '<div style="text-align:center;font-weight:600;margin-bottom:8px">Showing Agreement (SA-5)</div>'+
+       '<p style="margin:0 0 8px"><b>1. Parties:</b> <u>Maria R. Alvarez</u> (“Consumer”) agrees that between <u>Jul 11, 2026</u> and 11:59 p.m. on <u>Jul 11, 2026</u>, Consumer will use the professional services of <u>Southern Select Realty</u> (“Broker”).</p>'+
+       '<p style="margin:0 0 8px"><b>2. Property:</b> <u>210 Ocean Drive, Unit 4B, Boynton Beach, FL 33435</u> (MLS #A11542)</p>'+
+       '<p style="margin:0 0 8px"><b>5. Compensation:</b> <u>3% of the purchase price</u></p>'+
+       '<p style="margin:0 0 8px"><b>6. Retainer:</b> <u>$500.00</u></p>'+
+       '<p style="margin:8px 0 0;color:var(--muted)">Consumer: ____________________   Date: Jul 11, 2026</p>'+
+     '</div>'+
+     '<p class="small muted mt">Prepared by your agent from the brokerage-approved template. Illustrative demo values.</p>';}},
 
-   {id:'sign',mode:'buyer',agr:true,btn:'Sign & submit',body:function(){return '<h2 class="t">Signature</h2><p class="sub">Sign below to complete.</p><div class="sigline">Maria Alvarez</div>';}},
+   {id:'sign',mode:'buyer',agr:true,btn:'Sign & submit',body:function(){return '<h2 class="t">Signature</h2><p class="sub">Sign below to complete. A signed copy will be emailed to you.</p><div class="sigline">Maria Alvarez</div>';}},
 
-   {id:'done',mode:'buyer',btn:'See the agent’s record',body:function(){return '<div class="center"><div class="bigcheck">✓</div><h2 class="t">All set, Maria</h2><p class="sub">Your details are with Carlos. You can close this page — see you at the showing.</p></div>';}},
+   {id:'done',mode:'buyer',btn:'See the agent’s record',body:function(){
+     var msg = workflow==='full'
+       ? 'Your signed agreement has been emailed to you at <b>maria.alvarez@email.com</b>, and a copy was sent to Carlos.'
+       : 'Your details are with Carlos. You can close this page — see you at the showing.';
+     return '<div class="center"><div class="bigcheck">✓</div><h2 class="t">All set, Maria</h2><p class="sub">'+msg+'</p></div>'+
+       (workflow==='full' ? '<div class="box small" style="margin-top:4px">✉ <b>Emailed:</b> Showing Agreement (SA-5) — signed copy (PDF)</div>' : '');}},
 
    {id:'ready',mode:'agent',btn:'↺  Back to dashboard',body:function(){return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="color:var(--ok-ink);font-size:20px">✓</span><h2 class="t" style="margin:0">Ready to show</h2></div>'+
      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div class="avatar">MA</div><div><div style="font-weight:600">Maria R. Alvarez</div><div class="small muted">Ref SR-2026-0711-14</div></div></div>'+
