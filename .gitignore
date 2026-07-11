@@ -2,9 +2,10 @@
 .DS_Store
 Thumbs.db
 *.swp
-.vscode/
 .idea/
 
 # local render artifacts
 shot.png
 *.tmp
+config.bat
+node_modules
