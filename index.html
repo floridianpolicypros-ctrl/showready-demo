@@ -157,7 +157,12 @@
      '</div>'+
      '<p class="small muted mt">Prepared by your agent from the brokerage-approved template. Illustrative demo values.</p>';}},
 
-   {id:'sign',mode:'buyer',agr:true,btn:'Sign & submit',body:function(){return '<h2 class="t">Signature</h2><p class="sub">Sign below to complete. A signed copy will be emailed to you.</p><div class="sigline">Maria Alvarez</div>';}},
+   {id:'sign',mode:'buyer',agr:true,btn:'Submit signature',body:function(){return '<h2 class="t">Sign your agreement</h2>'+
+     '<p class="sub">You are electronically signing the <b>Showing Agreement (SA-5)</b> you just reviewed. This is a legal signature that binds you to its terms.</p>'+
+     '<label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;margin:0 0 14px"><input type="checkbox" style="width:auto;margin-top:3px"> I have read the agreement and agree to sign it electronically.</label>'+
+     '<div style="font-size:12px;color:var(--muted);margin:0 0 4px">Your signature</div>'+
+     '<div id="sigpad" class="sigline" style="cursor:pointer;color:var(--muted);font-family:inherit;font-size:14px">Tap here to sign</div>'+
+     '<p id="sigdone" class="small mt" style="display:none;color:var(--ok-ink)">✓ Signed as Maria R. Alvarez · Jul 11, 2026 · a copy will be emailed to you</p>';}},
 
    {id:'done',mode:'buyer',btn:'See the agent’s record',body:function(){
      var msg = workflow==='full'
@@ -188,6 +193,8 @@
     if(s.mode==='buyer'){var p=bs.indexOf(s);DOTS.innerHTML=bs.map(function(_,i){return '<span class="dot'+(i<=p?' on':'')+'"></span>';}).join('');}
     else DOTS.innerHTML='';
     Array.prototype.forEach.call(B.querySelectorAll('[data-w]'),function(t){t.onclick=function(){workflow=t.getAttribute('data-w');render();};});
+    var sp=B.querySelector('#sigpad');
+    if(sp){sp.onclick=function(){sp.textContent='Maria Alvarez';sp.style.fontFamily='"Segoe Script","Bradley Hand",cursive';sp.style.fontSize='26px';sp.style.color='var(--accent)';var d=document.getElementById('sigdone');if(d)d.style.display='block';};}
   }
   GO.onclick=function(){step(1);};
   BK.onclick=function(){step(-1);};
