@@ -102,6 +102,17 @@
   function sel(l,o){return '<label class="f">'+l+'</label><select>'+o.map(function(x,i){return '<option'+(i?'':' selected')+'>'+x+'</option>';}).join('')+'</select>';}
   function listcard(n,a,badge){return '<div class="listcard"><div><div class="n">'+n+'</div><div class="a">'+a+'</div></div>'+badge+'</div>';}
   function tile(v,label){return '<div class="tile'+(workflow===v?' on':'')+'" data-w="'+v+'">'+label+'</div>';}
+  function agreementDoc(){return '<div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:12px;line-height:1.7;color:#1a1f2b;max-height:230px;overflow:auto">'+
+    '<div style="text-align:center;font-weight:600;font-size:14px">Showing Agreement</div>'+
+    '<div style="text-align:center;color:var(--muted);font-size:11px;margin-bottom:10px">Florida Realtors SA-5 · Rev 1/26</div>'+
+    '<p style="margin:0 0 8px"><b>1. Parties.</b> <u>Maria R. Alvarez</u> (“Consumer”) agrees that between <u>Jul 11, 2026</u> and 11:59 p.m. on <u>Jul 11, 2026</u>, Consumer will use the professional services of <u>Southern Select Realty</u> (“Broker”) for the properties below.</p>'+
+    '<p style="margin:0 0 8px"><b>2. Property.</b> <u>210 Ocean Drive, Unit 4B, Boynton Beach, FL 33435</u> (MLS #A11542).</p>'+
+    '<p style="margin:0 0 8px"><b>3. Broker’s obligations.</b> Broker will use professional skill and diligent effort to show the property and assist Consumer in negotiating and closing any resulting transaction.</p>'+
+    '<p style="margin:0 0 8px"><b>4. Consumer’s obligations.</b> Consumer will work with Broker on the listed property and provide accurate information.</p>'+
+    '<p style="margin:0 0 8px"><b>5. Compensation.</b> <u>3% of the purchase price</u>, payable at closing as described in this Agreement.</p>'+
+    '<p style="margin:0 0 8px"><b>6. Retainer.</b> A non-refundable retainer of <u>$500.00</u>, earned upon signing.</p>'+
+    '<p style="margin:10px 0 0;color:var(--muted)">Consumer signature: __________________   Date: Jul 11, 2026</p>'+
+    '</div>';}
 
   var S=[
    {id:'intro',mode:'agent',btn:'Start the demo',body:function(){return '<h2 class="t">A 2-minute preview</h2>'+
@@ -146,20 +157,14 @@
    {id:'loc',mode:'buyer',btn:'Share location',body:function(){return '<h2 class="t">Location (optional)</h2><div class="photo" style="color:var(--accent);font-size:44px">◉</div><p class="sub mt">Your device reports its location at the time of submission. This does not prove identity or safety — it is recorded for the file only.</p>';}},
 
    {id:'review',mode:'buyer',agr:true,btn:'Looks good — sign',body:function(){return '<h2 class="t">Review your agreement</h2>'+
-     '<p class="sub">Here is your Showing Agreement, filled out. Please review before signing.</p>'+
-     '<div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:12.5px;line-height:1.75;color:#1a1f2b;max-height:250px;overflow:auto">'+
-       '<div style="text-align:center;font-weight:600;margin-bottom:8px">Showing Agreement (SA-5)</div>'+
-       '<p style="margin:0 0 8px"><b>1. Parties:</b> <u>Maria R. Alvarez</u> (“Consumer”) agrees that between <u>Jul 11, 2026</u> and 11:59 p.m. on <u>Jul 11, 2026</u>, Consumer will use the professional services of <u>Southern Select Realty</u> (“Broker”).</p>'+
-       '<p style="margin:0 0 8px"><b>2. Property:</b> <u>210 Ocean Drive, Unit 4B, Boynton Beach, FL 33435</u> (MLS #A11542)</p>'+
-       '<p style="margin:0 0 8px"><b>5. Compensation:</b> <u>3% of the purchase price</u></p>'+
-       '<p style="margin:0 0 8px"><b>6. Retainer:</b> <u>$500.00</u></p>'+
-       '<p style="margin:8px 0 0;color:var(--muted)">Consumer: ____________________   Date: Jul 11, 2026</p>'+
-     '</div>'+
+     '<p class="sub">Here is your Showing Agreement, filled out. Please read it before signing.</p>'+
+     agreementDoc()+
      '<p class="small muted mt">Prepared by your agent from the brokerage-approved template. Illustrative demo values.</p>';}},
 
    {id:'sign',mode:'buyer',agr:true,btn:'Submit signature',body:function(){return '<h2 class="t">Sign your agreement</h2>'+
-     '<p class="sub">You are electronically signing the <b>Showing Agreement (SA-5)</b> you just reviewed. This is a legal signature that binds you to its terms.</p>'+
-     '<label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;margin:0 0 14px"><input type="checkbox" style="width:auto;margin-top:3px"> I have read the agreement and agree to sign it electronically.</label>'+
+     '<p class="sub">These are the papers you are signing — the <b>Showing Agreement (SA-5)</b>. This is a legal electronic signature that binds you to its terms.</p>'+
+     agreementDoc()+
+     '<label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;margin:14px 0 12px"><input type="checkbox" style="width:auto;margin-top:3px"> I have read the agreement above and agree to sign it electronically.</label>'+
      '<div style="font-size:12px;color:var(--muted);margin:0 0 4px">Your signature</div>'+
      '<div id="sigpad" class="sigline" style="cursor:pointer;color:var(--muted);font-family:inherit;font-size:14px">Tap here to sign</div>'+
      '<p id="sigdone" class="small mt" style="display:none;color:var(--ok-ink)">✓ Signed as Maria R. Alvarez · Jul 11, 2026 · a copy will be emailed to you</p>';}},
@@ -169,7 +174,8 @@
        ? 'Your signed agreement has been emailed to you at <b>maria.alvarez@email.com</b>, and a copy was sent to Carlos.'
        : 'Your details are with Carlos. You can close this page — see you at the showing.';
      return '<div class="center"><div class="bigcheck">✓</div><h2 class="t">All set, Maria</h2><p class="sub">'+msg+'</p></div>'+
-       (workflow==='full' ? '<div class="box small" style="margin-top:4px">✉ <b>Emailed:</b> Showing Agreement (SA-5) — signed copy (PDF)</div>' : '');}},
+       (workflow==='full' ? '<div class="box small" style="margin-top:4px">✉ <b>Emailed:</b> Showing Agreement (SA-5) — signed copy (PDF)</div>'+
+         '<button class="btn soft" style="margin-top:10px">↓  Download your signed copy (PDF)</button>' : '');}},
 
    {id:'ready',mode:'agent',btn:'↺  Back to dashboard',body:function(){return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="color:var(--ok-ink);font-size:20px">✓</span><h2 class="t" style="margin:0">Ready to show</h2></div>'+
      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div class="avatar">MA</div><div><div style="font-weight:600">Maria R. Alvarez</div><div class="small muted">Ref SR-2026-0711-14</div></div></div>'+
